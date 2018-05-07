@@ -1,9 +1,25 @@
 Rails.application.routes.draw do
+  # root :to => "users/sign_up"
+  devise_for :users, path: '', path_names: { sign_in: ''}
+  # devise_scope :users do
+  #   root to: "devise/sessions#create"
+  # end
+  
+  resources :accounts do
+    collection do
+      get 'credit'
+      post 'save_credit'
+      get 'debit'
+      post 'save_debit'
+      get 'enquiry'
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  # root 'devise/sessions#create'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

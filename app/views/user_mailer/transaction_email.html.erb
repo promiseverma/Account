@@ -1,0 +1,13 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>User Name, <%= @user.email %></h1>
+    <p>
+      An Amount Of <%= @account.credit ? @account.credit : @account.debit %> Is Successfully <%= @account.credit ? 'Credited In' : 'Debited From' %> Your Account.<br>
+    </p>
+  </body>
+</html>

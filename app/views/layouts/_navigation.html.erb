@@ -1,0 +1,16 @@
+<%# navigation styled for Zurb Foundation 5 %>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+  	<% if user_signed_in? %>
+	    <li class="name"><%= link_to 'Home', accounts_path %></li>
+	    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+	<%end%>
+  </ul>
+  <div class="top-bar-section">
+    <ul>
+      <%= render 'layouts/navigation_links' %>
+    </ul>
+  </div>
+</nav>
+
+
