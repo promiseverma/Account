@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get 'debit'
       post 'save_debit'
       get 'enquiry'
+      get 'generate_report'
     end
   end
 

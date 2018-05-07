@@ -8,6 +8,12 @@ class Account < ActiveRecord::Base
 
   after_create :send_email_to_customer
 
+  scope :start, -> (startdate) { where("created_at > ?", Date.parse(startdate)) if startdate.present? }
+
+  scope :end, -> (enddate) { where("created_at < ?", Date.parse(enddate)) if enddate.present? }
+
+  scope :userid, -> (user_ids) { where("user_id IN (?)", user_ids) if user_ids.present? }
+
   def self.current
     Thread.current[:user]
   end
@@ -22,8 +28,8 @@ class Account < ActiveRecord::Base
   	UserMailer.transaction_email(self).deliver_now
   end
 
-  def debit_cannot_be_greater_than_available    
-    if debit.present? && debit > (Account.sum(:credit, :conditions => {:user_id => Thread.current[:user].id}) - Account.sum(:debit, :conditions => {:user_id => Thread.current[:user].id}))
+  def debit_cannot_be_greater_than_available   
+    if debit.present? && debit.to_f > (Account.sum(:credit, :conditions => {:user_id => Thread.current[:user].id}) - Account.sum(:debit, :conditions => {:user_id => Thread.current[:user].id}))
       errors.add(:debit, "can't be greater than available balance.")
     end
   end

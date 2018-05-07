@@ -1,6 +1,6 @@
-
-<% if @accounts.length > 0 %>
+<% if current_user.role != 'manager'%>
 <h3>Listing Accounts</h3>
+<% if @accounts.length > 0 %>
   <table>
     <thead>
       <tr>
@@ -24,7 +24,7 @@
 
 
 <br>
-
+<% end %>
 <%= link_to 'Deposit', credit_accounts_path,  :class => "button" %>
 <%= link_to 'Withdraw', debit_accounts_path, :class => "button" %>
 <%= link_to 'Enquiry', enquiry_accounts_path, remote: true, method: :get, :class => "button" %>
@@ -33,12 +33,15 @@
 </div>
 <% else %>
   <h3>Search Report</h3>
-  <p>Start Date: <%= text_field_tag :start, "", :class => 'datepicker ' %></p>
+  
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-4">.col-sm-4</div>
-      <div class="col-sm-4">.col-sm-4</div>
-      <div class="col-sm-4">.col-sm-4</div>
+      <%= form_tag(generate_report_accounts_path(format: "xls"), method: "get") do %>
+        <div class="column">Select Customer: <%= select_tag "customer", options_from_collection_for_select(@customers, "id", "name"), :multiple => true %></div>
+        <div class="column">Start Date: <%= text_field_tag :start, "", :class => 'datepicker1' %></div>
+        <div class="column">End Date: <%= text_field_tag :end, "", :class => 'datepicker2' %></div>
+        <div class="column"><%= submit_tag "Generate Report", :class => 'button' %></div>
+      <% end %>
     </div>
   </div>
 <% end %>

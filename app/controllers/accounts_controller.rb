@@ -7,17 +7,12 @@ class AccountsController < ApplicationController
   # GET /accounts
   # GET /accounts.json
   def index
-    
+    @customers = User.where(role: 0)
   end
 
   # GET /accounts/1
   # GET /accounts/1.json
   def show
-  end
-
-  # GET /accounts/new
-  def new
-    @account = Account.new
   end
 
   # GET /accounts/credit
@@ -29,10 +24,6 @@ class AccountsController < ApplicationController
   def debit
     @account = Account.new
     @account.user_id = current_user.id
-  end
-
-  # GET /accounts/1/edit
-  def edit
   end
 
   def save_credit
@@ -67,33 +58,11 @@ class AccountsController < ApplicationController
   def enquiry
     @balance = @accounts.sum(:credit) - @accounts.sum(:debit)
   end
-  # POST /accounts
-  # POST /accounts.json
-  def create
-    @account = Account.new(account_params)
 
+  def generate_report
+    @accounts_report = Account.start(params[:start]).end(params[:end]).userid(params[:customer])
     respond_to do |format|
-      if @account.save
-        format.html { redirect_to @account, notice: 'Account was successfully created.' }
-        format.json { render :show, status: :created, location: @account }
-      else
-        format.html { render :new }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /accounts/1
-  # PATCH/PUT /accounts/1.json
-  def update
-    respond_to do |format|
-      if @account.update(account_params)
-        format.html { redirect_to @account, notice: 'Account was successfully updated.' }
-        format.json { render :show, status: :ok, location: @account }
-      else
-        format.html { render :edit }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
-      end
+      format.xls
     end
   end
 
